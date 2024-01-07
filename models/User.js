@@ -15,8 +15,8 @@ try {
 
 export const User = db.define('User', {
     id: {
-        type: DataTypes.BLOB,
-        defaultValue: Sequelize.fn('UUID_TO_BIN', Sequelize.fn('UUID')),
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false,
     },

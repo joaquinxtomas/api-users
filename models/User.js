@@ -22,20 +22,48 @@ export const User = db.define('User', {
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate:{
+            notNull:{
+                args: true,
+                msg:"The name is required."
+            }
+        }
     },
     lastname: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate:{
+            notNull:{
+                args: true,
+                msg:"The lastname is required."
+            }
+        }
     },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            notNull: {
+                args: true,
+                msg:"The email is required."
+            },
+            isEmail: {
+                args: true,
+                msg: "Email invalid format."
+            }
+        }
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false, 
+        validate: {
+            notNull: {
+                args: true,
+                msg:"The email is required."
+            }
+        }
     },
     dbirth: {
         type: DataTypes.DATE,

@@ -8,10 +8,21 @@ export class UserController {
     }
 
     static async create(req, res) {
-        const { name, lastname, email, password, dbirth, createdAt, updatedAt } = req.body
+        const { name, lastname, email, password, dbirth, createdAt, updatedAt } = req.body 
 
-        const createUser = await User.create({ name, lastname, email, password, dbirth, createdAt, updatedAt })
-        res.json({ message: "User created." })
+        try {
+            const createUser = await User.create({ name, lastname, email, password, dbirth, createdAt, updatedAt})
+            res.json({ message: "User created." })
+        } catch (error) {
+            if (error.name == "SequelizeValidationError"){
+                const validationError = error.errors.map(err => ({
+                    field: err.path,
+                    message: err.message
+                }))
+
+                res.status(400).json({errors: validationError})
+            }
+        }
     }
 
     static async getById(req, res) {
@@ -24,8 +35,19 @@ export class UserController {
         const {id} = req.params
         const {name, lastname, email, password, dbirth, createdAt, updatedAt} = req.body
 
-        await User.update({name,lastname, email, password,dbirth,createdAt, updatedAt}, {where: {id: id}})
-        res.json("User has been updated.")
+        try {
+            await User.update({name,lastname, email, password,dbirth,createdAt, updatedAt}, {where: {id: id}})
+            res.json("User has been updated.")
+        } catch (error) {
+            if (error.name == "SequelizeValidationError"){
+                const validationError = error.errors.map(err => ({
+                    field: err.path,
+                    message: err.message
+                }))
+
+                res.status(400).json({errors: validationError})
+            }
+        }
     }
 
     static async delete(req, res) {
